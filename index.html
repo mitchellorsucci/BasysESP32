@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Basys MX3 Control</title>
+	<link href="styles/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+	<h1></h1>
+	<p> Basys MX3 Control over Wifi </p>
+
+	<form method="POST" action="/blink">
+		<input type="submit" name='cmd' value="Blink 1 LED"/>
+		<input type="submit" name='cmd' value="Blink 10 LEDS"/>
+		<input type="submit" name='cmd' value="Alternate LEDS"/>
+	</form>
+
+
+	<script src="scripts/main.js"></script>
+</body>
+</html>
