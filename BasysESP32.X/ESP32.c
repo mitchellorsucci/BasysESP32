@@ -1,6 +1,4 @@
-
 #include "ESP32.h"
-
 
 void printString(char * string) {
     while(!(UART4_StatusGet() & UART4_TX_COMPLETE )) {
@@ -11,13 +9,6 @@ void printString(char * string) {
     int i = 0;
     while(i < strlen(string)) {
         UART4_Write(cursor[i++]);
-    }
-}
-
-void printNumString(char * string, int length) {
-    int cursor = 0;
-    while(cursor < length) {
-        UART4_Write(string[cursor++]);
     }
 }
 
@@ -191,7 +182,6 @@ int establishSSLConnection(char * remoteIP, int remotePort) {
     sprintf(tx, "AT+CIPSTART=\"SSL\",\"%s\",%d\r\n", remoteIP, remotePort);
     sendToESP(tx);
 
-    
     while(!(UART1_StatusGet() & UART1_RECEIVER_IDLE )) {
            // Wait for the data to fill the RX buffer
     }
@@ -200,17 +190,11 @@ int establishSSLConnection(char * remoteIP, int remotePort) {
     char rx[RX_BUF_SIZE];
     char * cur = rx;
     while(UART1_ReceiveBufferSizeGet() < 512) {
-//        int rxSize = UART1_ReceiveBufferSizeGet();
-//        char status[100];
-//        sprintf(status, "Size of RX Buffer: %d\r\n", 512 - rxSize);
-//        printString(status);
         *cur++ = UART1_Read();
        
     }
+    
     *cur = '\0';
-//    char status[100];
-//    sprintf(status, "Size of rx: %d\r\n", strlen(rx));
-//    printString(status);
     char * connect;
     connect = strstr(rx, "CONNECT");
     if(NULL == connect) {
@@ -224,10 +208,7 @@ int establishSSLConnection(char * remoteIP, int remotePort) {
 // Link with the server to find out what current
 // Behavior the MX3 should have
 uint8_t getServerStatus(char * ip, int port) {
-//    establishSSLConnection(ip, port);
-    
-    // Send an HTTP get request to the server for
-    // a special file
+
     char request[200];
     int cursor = 0;
     cursor = sprintf(request, "GET %s HTTP/1.1\r\n", SERVER_FILE);
@@ -251,28 +232,13 @@ uint8_t getServerStatus(char * ip, int port) {
     char * cur = rx;
     int numBytes = 0;
     while(UART1_ReceiveBufferSizeGet() < 512) {
-        
 
-//        char status[100];
-//        sprintf(status, "Size of RX Buffer: %d\r\n", 512 - rxSize);
-//        printString(status);
         *cur++ = UART1_Read();
-        
-//        sprintf(status, "Num bytes read: %d\r\n", numBytes);
-//        printString(status);
-
-//        UART4_WriteBuffer(cur, numBytes);
-
-        
         
     }
     
-    
     *cur = '\0';
 
-//    char status[100];
-//    sprintf(status, "Size of rx: %d\r\n", strlen(rx));
-//    printString(status);
     printString(rx);
     
     char * message = strstr(rx, "BEGIN:");
